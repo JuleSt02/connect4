@@ -2,8 +2,8 @@
 #Oracle is importing Player, these type hints dont do anything on runtime
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
-from .oracle import ColumnClassification
+from typing import TYPE_CHECKING, Optional
+from .oracle import ColumnClassification, ColumnRecommendation
 from .logic import is_valid
 
 if TYPE_CHECKING:
@@ -19,7 +19,7 @@ class Player:
 #This typehint BaseOracle does NOT create a BaseOracle it is just info for us humans.
 # Simple documentation
 #When creating a Player, BaseOracle() needs to be passed to be propperly created. 
-    def __init__(self, name:str, char:str, oracle :"BaseOracle")->None:
+    def __init__(self, name:str, char:str, oracle: "BaseOracle")->None:
 
         self._char = char
         self._name = name
@@ -29,16 +29,32 @@ class Player:
 
         """
         Obtiene las mejores recomendaciones, selecciona la mejor de todas y juega en ella
-        """
-
+        """ 
         #Get recommendations form Oracle
+        #tuple to create like a "class" when a method or a function returns several values
+        (best, recommendations) = self._ask_oracle(board)
+        #Plays on best position
+        self._play_on(board, best)
+
+    #Plays in one position, calls method add from board to add char
+    def _play_on(self, board, pos):
+        board.add(self._char, pos)
+    
+    def _ask_oracle(self, board):
+
+        """
+        Asks oracle and gets the best option
+        """
+        #Receive all the recommendations from oracle(list of Enums and Index)
         recommendations = self._oracle.get_recommendation(board,self)
-        #Selects the best move that will be chosen calling another method 
-        best =self._choose(recommendations)    
-        #Play on board using board method add, passing char of player and the index of the
-       
-        board.add(self._char, best)
         
+        #Get the best option out of that list of recommendations
+        best = self._choose(recommendations) 
+        
+        #Return recomms and best
+        return (best, recommendations)
+
+
     def _choose(self,recommendations):
         #selecciona la mejor opcion de la lista de las recomendaciones
         valid = list(filter(lambda x: x.classification != ColumnClassification.FULL, recommendations))
@@ -55,18 +71,35 @@ class HumanPlayer(Player):
     """
 
     def __init__(self, name:str, char:str)->None:
-        
+
         self._char = char
         self._name = name
-    
-    #We need to override play because the human won´t use the oracle
-    def play(self,board):
 
+    def _ask_oracle(self, board):
+        """
+        We override the method of our superclass and ask the human which is the oracle in this case
+        """
+        while True:
+            #Get input
+            raw = input("Choose a column")
+            #Validate
+            if is_valid(raw,board):
+                pos = int(raw)
+                self._play_on(board, pos)
+                break
+    #We need to override play because the human won´t use the oracle
+    def play(self,board, pos):
         """
         Maybe also check how the board looks at the moment? Or maybe we do that in main?
-        """    
-        while True:
-            choice = input("Choose a column")
-            if is_valid(choice,board):
-                board.add(self._char, choice)
-                break
+        """       
+        board.add(self._char, pos)
+              
+
+# #Option Course:
+# def _ask_oracle(self,board):
+#  while True:
+#      raw = input("Select columns : ")
+#      if is_valid(raw,board):
+#          pos = int(raw)
+#          #returns tuple same as method from oracle
+#          return (ColumnRecommendation(pos, None), None)

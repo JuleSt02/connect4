@@ -8,8 +8,7 @@ from .logic import is_valid, is_col_range, is_int, column_full
 def test_play():
 
     """
-    We check if play uses the first available column
-    """
+    We check if play uses the first available column. We check only the play from our Player"""
 
     before = Board.from_list([[None, None, None, None],
                               ["x","x", "o", "o"],
@@ -42,8 +41,5 @@ def test_is_valid():
     assert is_col_range(5) == False
     assert column_full(1, valid)
     assert column_full(0, valid) == False
-
-
-
 
         
