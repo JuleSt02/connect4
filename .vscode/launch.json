@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run connect4 (module)",
+      "type": "python",
+      "request": "launch",
+      "module": "connect4.main",
+      "cwd": "${workspaceFolder}/src",
+      "console": "integratedTerminal"
+    }
+  ]
+}
