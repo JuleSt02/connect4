@@ -6,9 +6,8 @@ from typing import TYPE_CHECKING, Optional
 from .oracle import ColumnClassification, ColumnRecommendation
 from .logic import is_valid
 
-if TYPE_CHECKING:
-    from .oracle import BaseOracle
-
+# if TYPE_CHECKING:
+from .oracle import BaseOracle
 
 class Player:
 
@@ -19,11 +18,27 @@ class Player:
 #This typehint BaseOracle does NOT create a BaseOracle it is just info for us humans.
 # Simple documentation
 #When creating a Player, BaseOracle() needs to be passed to be propperly created. 
-    def __init__(self, name:str, char:str, oracle: "BaseOracle")->None:
+    def __init__(self, name:str, char=None, opponent = None, oracle=BaseOracle())->None:
 
         self._char = char
         self._name = name
         self._oracle = oracle
+        self._opponent = opponent
+    
+    #We create the property opponent first
+    @property
+    def opponent(self):
+        return self._opponent
+    
+    #We create a setter that will assign the value of opponent to each player
+    #when we do pl1.opponent = pl2 Python calls Player.opponent(pl1,pl2) and executes setter
+    @opponent.setter  
+    def opponent(self, other):
+        #We guarantee that it only gets executed when we other is not None since the class playe
+        #receives opponent= None as a default parameter and when this executes with None:ERROR
+        if other != None:
+            self._opponent = other
+            other._opponent = self
 
     def play(self,board):
 
@@ -70,7 +85,7 @@ class HumanPlayer(Player):
     Doesnt need an Oracle. Receives input from a human player
     """
 
-    def __init__(self, name:str, char:str)->None:
+    def __init__(self, name:str, char=None)->None:
 
         self._char = char
         self._name = name

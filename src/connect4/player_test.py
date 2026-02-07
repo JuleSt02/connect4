@@ -20,7 +20,7 @@ def test_play():
                               [None, None, None, None]] )
 
 
-    player = Player("Chip", "x", oracle = BaseOracle())
+    player = Player("Chip", "x")
 
     player.play(before)
     #Python reads after as a list of lists not as a Board Object so it needs to be
