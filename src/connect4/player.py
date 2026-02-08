@@ -12,11 +12,9 @@ from .oracle import BaseOracle
 class Player:
 
     """
-    Representa un jugador, con un nombre y un caracter (con el que juega)
+    Represents a Player
     """
-#Aqui si necesitamos crear un init ya que tenemos que decirle tu te llamas "Manolo" y juagas con "X"
-#This typehint BaseOracle does NOT create a BaseOracle it is just info for us humans.
-# Simple documentation
+
 #When creating a Player, BaseOracle() needs to be passed to be propperly created. 
     def __init__(self, name:str, char=None, opponent = None, oracle=BaseOracle())->None:
 
@@ -24,11 +22,15 @@ class Player:
         self._name = name
         self._oracle = oracle
         self._opponent = opponent
+        self.last_move = None
     
     #We create the property opponent first
     @property
     def opponent(self):
         return self._opponent
+    @property
+    def char(self):
+        return self._char
     
     #We create a setter that will assign the value of opponent to each player
     #when we do pl1.opponent = pl2 Python calls Player.opponent(pl1,pl2) and executes setter
@@ -43,7 +45,7 @@ class Player:
     def play(self,board):
 
         """
-        Obtiene las mejores recomendaciones, selecciona la mejor de todas y juega en ella
+       Gets all the recommendations, selects the best and plays in that pos
         """ 
         #Get recommendations form Oracle
         #tuple to create like a "class" when a method or a function returns several values
@@ -54,6 +56,8 @@ class Player:
     #Plays in one position, calls method add from board to add char
     def _play_on(self, board, pos):
         board.add(self._char, pos)
+        #Saves the movelast move
+        self.last_move = pos
     
     def _ask_oracle(self, board):
 

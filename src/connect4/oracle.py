@@ -1,3 +1,5 @@
+#CHECK AND MODIFY
+
 #Clases de columnas, hay varios estados pero siempre puede haber solo uno, por lo tanto ENUM
 from enum import Enum, auto
 from .board import Board
@@ -37,7 +39,7 @@ class ColumnRecommendation:
           return (self.index, self.classification) == (other.index, other.classification)
        
 
-#Oraculos, de mas tonto a mas lostp
+#Oraculos, de mas tonto a mas listo
 #los oraculos, deben  de realizar un trabajo complejo: clasificar columnas
 #en el caso mas complejo, teniendo en cuenta errores del pasado.
 #usamos dividi y venceras, y cada oraculo del mas tonto al mas listo 

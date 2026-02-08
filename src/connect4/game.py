@@ -1,3 +1,6 @@
+#CHECK LOOP, CHECK GAME ERRORS WITH EXECUTING LOOP, MISSING PARAMETERS. 
+#CHECK GAME, different from course
+
 from .board import Board
 from enum import Enum,auto
 from .match import Match
@@ -45,28 +48,57 @@ class Game:
           #display the board
           self.display_board()
           #if the game is over
-          if self._is_game_over():
+          if self._is_game_over(self):
              #display final result
-             self.display_result()
+             self.display_result(self)
     
     def display_move(self, player):
-       pass
-    def display_board(self):
-       pass
-    def display_result(self):
-       pass
-    
-    def _is_game_over(self):
-       
-       
-       if is_victory
-    
-    def is_victory_player(self, player1, player2):
-       if self.board.is_victory(player1):
-          print(f"Victory {player1}")
-       elif self.board.is_victory(player2):
-       
+       print(f"{player._name} {player._char} has moved in column {player.last_move}")
 
+    def display_board(self):
+       print(self.board)
+    #Needs to be modified
+    def display_result(self,player1, player2):
+       """
+       If the game is over, it displays the result
+       """
+       if self.has_victory_player(player1._char):
+        print(f"The winner is {player1._name} !!!") 
+       elif self.has_victory_player(player2._char):
+        print(f"The winner is {player2._name} !!!")
+       else:
+         print(f"No winners for today, its a tie between {player1._name} and {player2._name}")
+   
+
+    
+    def _is_game_over(self, player1, player2):
+       
+       """
+       Predicate that checkst if there is either a victory of one of the players or a full board(tie) resulting in GAME OVER.
+       """
+       result = False
+       if self.has_victory_player(player1._char) or self.has_victory_player(player2._char):
+          result = True
+       elif self.board_is_full_tie():
+          result = True
+       return result
+       
+    def has_victory_player(self,char):
+       result = False
+       if self.board.is_victory(char):
+          result = True
+       return result
+   
+    def board_is_full_tie(self):
+       """
+      Method that checks if all of the columns of the board are full.
+       """
+       counter = 0
+       #Itterate over all cols calling the mehotd is_full of board 
+       for i in range(len(self.board)):
+          if self.board.is_full(i):
+             counter += 1
+       return counter == len(self.board)
 
     def print_logo(self):
      logo = pyglet.text.Label("Connect4", font_name="Arial", font_size=28)
