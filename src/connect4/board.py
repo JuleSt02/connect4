@@ -93,11 +93,22 @@ class Board:
     
         """
         return self._columns[index][-1] != None
-        # result = False
-        # if col[-1] != None:
+        result = False
+        # for cols in self._columns:
+        #    if self._columns[index][-1] != None:
         #     result = True
         # return result
-        
+    
+    def all_full(self)->bool:
+        result = False
+        counter = 0
+        for i in range(len(self._columns)):
+            if self.is_full(i):
+                counter += 1
+        if counter == len(self._columns):
+         result = True
+        return result
+
     def add(self,player_char, col_number:int):
     # Pecadora : impure because it changes the matrix
 

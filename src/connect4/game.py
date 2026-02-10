@@ -37,6 +37,8 @@ class Game:
    
     def _start_game_loop(self):
        """Starts game,creates loop, finished with a GAME OVER"""
+       p1 = self.match.player1
+       p2 = self.match.player2
        
        while True:
           #We obtain the current player
@@ -48,9 +50,9 @@ class Game:
           #display the board
           self.display_board()
           #if the game is over
-          if self._is_game_over(self):
+          if self._is_game_over(p1, p2):
              #display final result
-             self.display_result(self)
+             self.display_result(p1, p2)
     
     def display_move(self, player):
        print(f"{player._name} {player._char} has moved in column {player.last_move}")
@@ -68,8 +70,6 @@ class Game:
         print(f"The winner is {player2._name} !!!")
        else:
          print(f"No winners for today, its a tie between {player1._name} and {player2._name}")
-   
-
     
     def _is_game_over(self, player1, player2):
        
@@ -79,7 +79,7 @@ class Game:
        result = False
        if self.has_victory_player(player1._char) or self.has_victory_player(player2._char):
           result = True
-       elif self.board_is_full_tie():
+       elif self.board.all_full():
           result = True
        return result
        
@@ -89,16 +89,16 @@ class Game:
           result = True
        return result
    
-    def board_is_full_tie(self):
-       """
-      Method that checks if all of the columns of the board are full.
-       """
-       counter = 0
-       #Itterate over all cols calling the mehotd is_full of board 
-       for i in range(len(self.board)):
-          if self.board.is_full(i):
-             counter += 1
-       return counter == len(self.board)
+   #  def board_is_full_tie(self):
+   #     """
+   #    Method that checks if all of the columns of the board are full.
+   #     """
+   #     counter = 0
+   #     #Itterate over all cols calling the mehotd is_full of board 
+   #     for i in range(len(self.board)):
+   #        if self.board.is_full(i):
+   #           counter += 1
+   #     return counter == len(self.board)
 
     def print_logo(self):
      logo = pyglet.text.Label("Connect4", font_name="Arial", font_size=28)

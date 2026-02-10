@@ -8,6 +8,11 @@ class Match():
     """
 
     def __init__(self, player1: Player, player2: Player):
+        
+        #The instances of the object Player gets"stored - points to that player instance"
+        #Now players are an attribute of match and can be accessed directly through match 
+        self.player1 = player1
+        self.player2 = player2
         player1._char = "x"
         player2._char = "o"
 

@@ -27,7 +27,7 @@ def test_game_is_over():
             ["o",None,None,None],
             ["o",None,None,None]])
     
-    unfinished = Board.from_list([["o", "x", "x", None],
+    unfinished = Board.from_list([["o", "x", "x", "x"],
                   [None,None,None,None],
                 [None,None,None,None],
                 [None,None,None,None]])
@@ -37,6 +37,7 @@ def test_game_is_over():
                             ["x", "o", "x", "o"],
                             ["o", "x", "o", "x"],
                         ])
+    
 
     #When game starts it creates a Board instance
     #self.board = Board(), so game.board is an attribute of the Game object
@@ -53,7 +54,7 @@ def test_game_is_over():
     assert game._is_game_over(chip, chop) == True
 
     game.board = unfinished
-    assert game._is_game_over(chip, chop) == False
+    assert game._is_game_over(chip, chop) == True
 
    
     

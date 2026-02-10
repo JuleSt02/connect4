@@ -88,7 +88,6 @@ class HumanPlayer(Player):
     """
     Doesnt need an Oracle. Receives input from a human player
     """
-
     def __init__(self, name:str, char=None)->None:
 
         self._char = char
@@ -98,23 +97,27 @@ class HumanPlayer(Player):
         """
         We override the method of our superclass and ask the human which is the oracle in this case
         """
+       
         while True:
             #Get input
-            raw = input("Choose a column")
+            raw = input("Choose a column: ")
             #Validate
             if is_valid(raw,board):
                 pos = int(raw)
-                self._play_on(board, pos)
+                #self._play_on(board, pos)
                 break
+        return pos
+        
     #We need to override play because the human won´t use the oracle
-    def play(self,board, pos):
+    def play(self,board):
         """
         Maybe also check how the board looks at the moment? Or maybe we do that in main?
-        """       
-        board.add(self._char, pos)
+        """  
+        pos = self._ask_oracle(board)     
+        self._play_on(board, pos)
               
 
-# #Option Course:
+# #Option Course:s
 # def _ask_oracle(self,board):
 #  while True:
 #      raw = input("Select columns : ")
