@@ -5,8 +5,10 @@ from .board import Board
 from enum import Enum,auto
 from .match import Match
 from .player import Player, HumanPlayer
-import pyglet
-
+from pyfiglet import figlet_format
+from .logic import inverted_board, reverted_matrix
+from beautifultable import BeautifulTable
+from .settings import BOARD_COLUMNS
 class RoundType(Enum):
    COMPUTER_VS_COMPUTER = auto()
    COMPUTER_VS_HUMAN = auto()
@@ -53,11 +55,24 @@ class Game:
           if self._is_game_over(p1, p2):
              #display final result
              self.display_result(p1, p2)
+             break
     
     def display_move(self, player):
        print(f"{player._name} {player._char} has moved in column {player.last_move}")
 
     def display_board(self):
+       
+       # we obtain a amtrix
+       matrix = self.board.columns
+       matrix = inverted_board(matrix)
+       # create a beautifultable
+       bt = BeautifulTable()
+       for col in matrix:
+          bt.columns.append(reversed((col)))
+       bt.columns.header = [str(i) for i in range(BOARD_COLUMNS)]
+       # print
+       print(bt)
+       
        print(self.board)
     #Needs to be modified
     def display_result(self,player1, player2):
@@ -101,7 +116,7 @@ class Game:
    #     return counter == len(self.board)
 
     def print_logo(self):
-     logo = pyglet.text.Label("Connect4", font_name="Arial", font_size=28)
+     logo = figlet_format("Connect4")
      print(logo)
    
     def _configure_by_user(self):

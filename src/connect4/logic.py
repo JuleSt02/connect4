@@ -109,7 +109,9 @@ def is_valid(input, board):
     #It needs to be an int
     #Between 0-4
     #Column needs to be not full
-    return (is_int(input)) and (is_col_range(int(input))) and not column_full(int(input), board)     
+  
+    return (is_int(input)) and (is_col_range(int(input))) and not column_full(int(input), board) 
+    
 
 def column_full(input, board):
 

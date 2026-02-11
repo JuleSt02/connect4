@@ -106,6 +106,8 @@ class HumanPlayer(Player):
                 pos = int(raw)
                 #self._play_on(board, pos)
                 break
+            else:
+                print("Invalid input you fool, try again. ")
         return pos
         
     #We need to override play because the human won´t use the oracle

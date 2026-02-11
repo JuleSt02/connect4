@@ -22,6 +22,10 @@ class Board:
         board._columns = deepcopy(columns)
         return board
     
+    @property
+    def columns(self):
+        return self._columns
+    
     def __init__(self)-> None:
         """
         Creates a board
@@ -57,30 +61,31 @@ class Board:
         return hash(self._columns)
 
     
-    def __repr__(self)->str:
-        """
-        Repr lets us print the state of our object
+    # def __repr__(self)->str:
+    #     """
+    #     Repr lets us print the state of our object
        
-        """
-       # inverted = inverted_board(self._columns)
-        return f"Board({(self._columns)}"
+    #     """
+    #    # inverted = inverted_board(self._columns)
+    #     return f"Board({(self._columns)}"
     
-    def __len__(self):
+    # def __len__(self):
         """
         Magical method we can use to get the length of every object, also classes
         """
         return len(self._columns)
 
     
-    def __str__(self)->str:
+    # def __str__(self)->str:
 
-        inverted = inverted_board(self._columns)
-        #Convert into str to apply /n
-        text = ""
-        for row in inverted:
-          text += str(row) + "\n"
-        #Cleans last /n
-        return text.rstrip("\n")
+    #     inverted = inverted_board(self._columns)
+    #     reverted = reverted_matrix(inverted)
+    #     #Convert into str to apply /n
+    #     text = ""
+    #     for row in reversed(inverted):
+    #       text += str(row) + "\n"
+    #     #Cleans last /n
+    #     return text.rstrip("\n")
     
     def create_board(self):    
         return [[None] * BOARD_ROWS for _ in range(BOARD_COLUMNS)]
