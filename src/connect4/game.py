@@ -64,16 +64,15 @@ class Game:
        
        # we obtain a amtrix
        matrix = self.board.columns
-       matrix = inverted_board(matrix)
+       matrix = reverted_matrix(matrix)
        # create a beautifultable
        bt = BeautifulTable()
        for col in matrix:
-          bt.columns.append(reversed((col)))
+          #bt.columns.append is a traspose operation so list -> col automat.
+          bt.columns.append((col))
        bt.columns.header = [str(i) for i in range(BOARD_COLUMNS)]
        # print
        print(bt)
-       
-       print(self.board)
     #Needs to be modified
     def display_result(self,player1, player2):
        """

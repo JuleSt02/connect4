@@ -24,7 +24,12 @@ class Board:
     
     @property
     def columns(self):
-        return self._columns
+        """
+        Exposes this attribute so others have access to it but only a copy
+        of the original object so that the original object can´t and its internal state 
+        can´t be modified
+        """
+        return deepcopy(self._columns)
     
     def __init__(self)-> None:
         """
@@ -69,7 +74,7 @@ class Board:
     #    # inverted = inverted_board(self._columns)
     #     return f"Board({(self._columns)}"
     
-    # def __len__(self):
+    def __len__(self):
         """
         Magical method we can use to get the length of every object, also classes
         """
@@ -98,12 +103,7 @@ class Board:
     
         """
         return self._columns[index][-1] != None
-        result = False
-        # for cols in self._columns:
-        #    if self._columns[index][-1] != None:
-        #     result = True
-        # return result
-    
+      
     def all_full(self)->bool:
         result = False
         counter = 0
@@ -133,7 +133,6 @@ class Board:
                     found_slot = True
                     chosen_column[index] = player_char
                     break
-    
                 
         except IndexError:
          raise ValueError(f"This column does not exist: {col_number}")
