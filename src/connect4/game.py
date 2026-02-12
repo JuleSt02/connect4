@@ -103,16 +103,6 @@ class Game:
           result = True
        return result
    
-   #  def board_is_full_tie(self):
-   #     """
-   #    Method that checks if all of the columns of the board are full.
-   #     """
-   #     counter = 0
-   #     #Itterate over all cols calling the mehotd is_full of board 
-   #     for i in range(len(self.board)):
-   #        if self.board.is_full(i):
-   #           counter += 1
-   #     return counter == len(self.board)
 
     def print_logo(self):
      logo = figlet_format("Connect4")

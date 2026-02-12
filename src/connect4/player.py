@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 from .oracle import ColumnClassification, ColumnRecommendation
 from .logic import is_valid
+import random
 
 # if TYPE_CHECKING:
 from .oracle import BaseOracle
@@ -75,12 +76,12 @@ class Player:
 
 
     def _choose(self,recommendations):
-        #selecciona la mejor opcion de la lista de las recomendaciones
+        #sorts out the columns that are full
         valid = list(filter(lambda x: x.classification != ColumnClassification.FULL, recommendations))
          #if an object has named attributes, acccess it with .attribute NOT [index]
-        return valid[0].index
-        # sorted_recoms = list(sorted(recommendations, key=lambda x: x[1].value, reverse=True))
-        # return sorted_recoms[0]
+         #return random choice ov valid recommendation
+        # sorted_valid = list(sorted(valid, key=lambda x: x[1].value, reverse=True))
+        return random.choice(valid).index
         
 
 class HumanPlayer(Player):
