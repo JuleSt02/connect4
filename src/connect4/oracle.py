@@ -22,7 +22,7 @@ class ColumnRecommendation:
     Clase que representa la recomendacion del oraculo para una columna.
     Se compone del indice de dicha columna en el ttablero y un valor de ColumnClassification.
     """
-  #Esta clase no es especialmemnte inteleginte, podriamos usar una tupla pero queremos practicar clases
+  #Esta clase no es especialmemnte inteleginte, podriamos usar una tupla 
     def __init__(self, index:int, classification: ColumnClassification):
         self.index = index
         self.classification = classification
@@ -132,3 +132,20 @@ class SmartOracle(BaseOracle):
         #      result = ColumnRecommendation(index, ColumnClassification.WIN)
         #      return result
 
+
+#NEED to check better placement - issues with imports
+def are_same(list_elements:list[ColumnRecommendation])->bool:
+   
+   """
+   Checks if all elements of a list are the same
+   """
+   result = True
+   comparing_element = list_elements[0].classification
+   print(comparing_element)
+
+   for el in list_elements:
+      if el.classification != comparing_element:
+         print(el.classification)
+         result = False
+         break
+   return result 

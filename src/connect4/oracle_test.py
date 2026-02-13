@@ -1,5 +1,6 @@
 from .board import Board
-from .oracle import BaseOracle, ColumnRecommendation, ColumnClassification
+from .oracle import BaseOracle, ColumnRecommendation, ColumnClassification, are_same
+
 
 #TEST BASE ORACLE 
 
@@ -40,5 +41,21 @@ def test_equality():
     #no equivalntes
     assert cr != ColumnRecommendation(1, ColumnClassification.MAYBE)
     assert cr != ColumnRecommendation(2, ColumnClassification.FULL)
+
+
+def test_are_same():
+
+    list_recommendations1 = [ColumnRecommendation(0, ColumnClassification.MAYBE),
+                ColumnRecommendation(1, ColumnClassification.FULL),
+                ColumnRecommendation(2, ColumnClassification.FULL),
+                ColumnRecommendation(3, ColumnClassification.MAYBE)]
+    list_recommendations2 = [ColumnRecommendation(0, ColumnClassification.MAYBE),
+                ColumnRecommendation(1, ColumnClassification.MAYBE),
+                ColumnRecommendation(2, ColumnClassification.MAYBE),
+                ColumnRecommendation(0, ColumnClassification.MAYBE)]
+    
+    assert are_same(list_recommendations1) == False
+    assert are_same(list_recommendations2)
+
 
 

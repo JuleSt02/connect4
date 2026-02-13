@@ -116,7 +116,8 @@ def is_valid(input, board):
 def column_full(input, board):
 
    return board.is_full(input)      
-        
+
+
 
 
 # def add_prefix(number:int, filler:Any)->list:

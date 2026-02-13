@@ -4,28 +4,29 @@ from .oracle import BaseOracle
 from .logic import is_valid, is_col_range, is_int, column_full
 
 
+#UPDATE test_play doesn´t pass anymore since refactoring of Player method choose, now a random choice is made not the first available.
 
-def test_play():
+# def test_play():
 
-    """
-    We check if play uses the first available column. We check only the play from our Player"""
+#     """
+#     We check if play uses the first available column. We check only the play from our Player"""
 
-    before = Board.from_list([[None, None, None, None],
-                              ["x","x", "o", "o"],
-                              ["x","x", "o", "o"],
-                              [None, None, None, None]] )
-    after = ([["x", None, None, None],
-                              ["x","x", "o", "o"],
-                              ["x","x", "o", "o"],
-                              [None, None, None, None]] )
+#     before = Board.from_list([[None, None, None, None],
+#                               ["x","x", "o", "o"],
+#                               ["x","x", "o", "o"],
+#                               [None, None, None, None]] )
+#     after = ([["x", None, None, None],
+#                               ["x","x", "o", "o"],
+#                               ["x","x", "o", "o"],
+#                               [None, None, None, None]] )
 
 
-    player = Player("Chip", "x")
+    # player = Player("Chip", "x")
 
-    player.play(before)
-    #Python reads after as a list of lists not as a Board Object so it needs to be
-    #converted to a BoardInstance first.
-    assert before == Board.from_list(after)
+    # player.play(before)
+    # #Python reads after as a list of lists not as a Board Object so it needs to be
+    # #converted to a BoardInstance first.
+    # assert before == Board.from_list(after)
 
 
 def test_is_valid():
@@ -42,4 +43,4 @@ def test_is_valid():
     assert column_full(1, valid)
     assert column_full(0, valid) == False
 
-        
+

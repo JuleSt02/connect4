@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
-from .oracle import ColumnClassification, ColumnRecommendation
+from .oracle import ColumnClassification, ColumnRecommendation, are_same
 from .logic import is_valid
 import random
 
@@ -79,9 +79,14 @@ class Player:
         #sorts out the columns that are full
         valid = list(filter(lambda x: x.classification != ColumnClassification.FULL, recommendations))
          #if an object has named attributes, acccess it with .attribute NOT [index]
-         #return random choice ov valid recommendation
-        # sorted_valid = list(sorted(valid, key=lambda x: x[1].value, reverse=True))
-        return random.choice(valid).index
+         #we sort the list accessing the value of the classification reverse = True so we get highest lo lowest
+        sorted_valid = list(sorted(valid, key=lambda x: x.classification.value, reverse=True))
+        #if all same same, return random choice:
+        if are_same(sorted_valid):
+            return random.choice(valid).index
+        #else return the first ColumnRecommendation (attribute index)
+        else:
+         return sorted_valid[0].index
         
 
 class HumanPlayer(Player):
