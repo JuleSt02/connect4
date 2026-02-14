@@ -140,7 +140,8 @@ class Board:
         if not found_slot:
             # hasn´t found a slot, has to go over the whole list
             raise ValueError(f"This slot is full")
-        return self._columns
+        return self
+        
         
  
     def is_victory(self, player_char: str)-> bool:

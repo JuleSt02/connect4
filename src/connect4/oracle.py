@@ -6,6 +6,7 @@ from .board import Board
 from .settings import BOARD_COLUMNS 
 import copy
 
+
 class ColumnClassification(Enum):
 
     FULL = -1 #imposible
@@ -34,9 +35,9 @@ class ColumnRecommendation:
        #Estas instancias son de la misma clase?
        if not isinstance(other, self.__class__):
           return False
-       #si son de la misma clase, pues compara las propiedades de unoy y otro
+       #If same class, we check the attribute classification , index attribute  is not relevant for this 
        else:
-          return (self.index, self.classification) == (other.index, other.classification)
+          return (self.classification) == (other.classification)
        
 
 #Oraculos, de mas tonto a mas listo
@@ -62,8 +63,8 @@ class BaseOracle:
     
     def _get_columns_recommendation(self, board, index:int, player)->ColumnRecommendation:
         """
-       Medodo privado, que determina si una columna esta llena, en cuyo caso la clasifica
-       como Full. Para todo lo demas, Maybe.
+       Private method that determines if a column is full and in that case classification becomes FULL,
+       everything else is classified as MAYBE
         """
         result = ColumnRecommendation(index, ColumnClassification.MAYBE)
         #Checking if we are incorrect, if is_full is True we change the classification
@@ -91,49 +92,40 @@ class SmartOracle(BaseOracle):
                                       player)->ColumnRecommendation:
        
        """
-       Afina las recomendaciones. Las que hayan salido como Maybe intento ver si hay algo mas 
-       preciso, en concreto una victoria para player.
+        Checks recommendation classified as MAYBE for a possible WIN for player.
        """
-       #pido la clasificacion basica 
+       #Get  basic recommendation
        recommendation =  super()._get_columns_recommendation(board, index, player)
-       #Afino los Maybe: juego como player en esa columna y compruebo si eso me da una victoria
-       if recommendation == ColumnClassification.MAYBE:
-          #creo un tablero temporal a partir de board
-          #juego en un index
-          # le pregunto a tablero temporal si is_victory(player)
-          #si es asi, reclasifico a WIN
-          #Importantisimo hacer una copia de board (DEEPCOPY) para no alterar el board (datos compuestos,
-          #same same as listas. Apuntan al mismo sitio)
-        if board.is_victory(self._play_on_temp_board(board,index,player)):
+       
+       #if the classification of that recommendation is maybe:
+       if recommendation.classification == ColumnClassification.MAYBE:
+          
+          #Variable that points to a temporal board with a "new move"
+          temp_board_with_play = self._play_on_temp_board(board,index,player.char)
+          
+          #if on that temp board with the added move is_victory == True
+          if temp_board_with_play.is_victory(player.char):
+           
+           #recommendation gets changed from MAYBE to WIN
            recommendation = ColumnRecommendation(index, ColumnClassification.WIN)
-        return recommendation
-    def _play_on_temp_board(self, original:Board,index:int, player):
+       
+       return recommendation
+    def _play_on_temp_board(self, original:Board,index:int, player_char):
        
        """
-       Crea una DEEPCOPY del board original juega en nombre de player en la columna que nos
-       ha dicho y devuelve el board resultante.
+      Creates a DEEPCOPY as to not change our "actual" board, plays on it and returns the altered 
+      board to be checked for possible victory
        """
        temp_board = copy.deepcopy(original)
-       return (temp_board.add(player,index))
+       temp_board_play = temp_board.add(player_char,index)
+       return temp_board_play
        
 
 
-    
-    # def winning_moves(self, board:Board, index:int, player:Player):
-
-        # """
-        # Recibe una copia del board actual, y comprueba todas las columnas en busca de una victoria inminent
-        # """
-        #  #Unsure que resultado debe devolver si no es win
-        # result = ColumnRecommendation
-        # #Itera sobre todo el board y por cada columna le pasamos el player y llamamos al metodo is_victory
-        # for i in range(board):
-        #     if board.is_victory(board.play(player, i)):
-        #      result = ColumnRecommendation(index, ColumnClassification.WIN)
-        #      return result
 
 
 #NEED to check better placement - issues with imports
+#COURSE : Change __eq__ only compare class not index - change testing euality - are_same checks only normal lists
 def are_same(list_elements:list[ColumnRecommendation])->bool:
    
    """

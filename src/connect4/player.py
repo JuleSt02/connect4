@@ -87,7 +87,7 @@ class Player:
         #else return the first ColumnRecommendation (attribute index)
         else:
          return sorted_valid[0].index
-        
+     
 
 class HumanPlayer(Player):
 

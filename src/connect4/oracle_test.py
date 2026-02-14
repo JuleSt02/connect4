@@ -1,5 +1,6 @@
 from .board import Board
-from .oracle import BaseOracle, ColumnRecommendation, ColumnClassification, are_same
+from .oracle import BaseOracle, ColumnRecommendation, ColumnClassification, are_same, SmartOracle
+from .player import Player
 
 
 #TEST BASE ORACLE 
@@ -38,8 +39,9 @@ def test_equality():
     #que el programa pueda reconocer estas equivalencias entre objetos que tengan el mismo valor
     #Otro objeto con mismos valores
     assert cr == ColumnRecommendation(2, ColumnClassification.MAYBE) 
+    assert cr == ColumnRecommendation(3, ColumnClassification.MAYBE)
     #no equivalntes
-    assert cr != ColumnRecommendation(1, ColumnClassification.MAYBE)
+    assert cr != ColumnRecommendation(1, ColumnClassification.FULL)
     assert cr != ColumnRecommendation(2, ColumnClassification.FULL)
 
 
@@ -59,3 +61,24 @@ def test_are_same():
 
 
 
+#TEST SMART ORACLE
+
+def test_smart_oracle():
+
+    player_test = Player("Robocop", "x")
+    
+    board = Board.from_list([["x", None, None, None],
+                            ["x","x",None, None],
+                            ["o","o",None ,None ],
+                            ["x",None,None, None]])
+    
+    rappel = SmartOracle()
+    
+    expected = [ColumnRecommendation(0, ColumnClassification.MAYBE),
+                ColumnRecommendation(1, ColumnClassification.WIN),
+                ColumnRecommendation(2, ColumnClassification.WIN),
+                ColumnRecommendation(3, ColumnClassification.MAYBE)]
+    
+    assert rappel.get_recommendation(board, player_test) == expected
+    
+    
