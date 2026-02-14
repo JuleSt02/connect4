@@ -63,22 +63,97 @@ def test_are_same():
 
 #TEST SMART ORACLE
 
-def test_smart_oracle():
+# def test_smart_oracle():
 
-    player_test = Player("Robocop", "x")
+#     player_test = Player("Robocop", "x")
     
-    board = Board.from_list([["x", None, None, None],
+#     board = Board.from_list([["x", None, None, None],
+#                             ["x","x",None, None],
+#                             ["o","o",None ,None ],
+#                             ["x",None,None, None]])
+    
+#     rappel = SmartOracle()
+#     expected = [ColumnRecommendation(0, ColumnClassification.MAYBE),
+#                 ColumnRecommendation(1, ColumnClassification.WIN),
+#                 ColumnRecommendation(2, ColumnClassification.WIN),
+#                 ColumnRecommendation(3, ColumnClassification.MAYBE)]
+    
+    # assert rappel.get_recommendation(board, player_test) == expected
+    
+def test_is_wining_move():
+    winner = Player("Robocop", "x")
+    loser = Player("Vader" , "o")
+
+    empty = Board.from_list([[None, None, None, None],
+                            [None,None,None, None],
+                            [None, None ,None ,None ],
+                            [None,None,None, None]])
+    
+    almost = Board.from_list([["x", None, None, None],
                             ["x","x",None, None],
                             ["o","o",None ,None ],
                             ["x",None,None, None]])
     
-    rappel = SmartOracle()
+    oracle = SmartOracle()
     
-    expected = [ColumnRecommendation(0, ColumnClassification.MAYBE),
-                ColumnRecommendation(1, ColumnClassification.WIN),
-                ColumnRecommendation(2, ColumnClassification.WIN),
-                ColumnRecommendation(3, ColumnClassification.MAYBE)]
+    assert oracle._is_winning_move(empty, 0, winner) == False
+    assert oracle._is_winning_move(empty, 1, loser) == False
+    assert oracle._is_winning_move(almost, 1, winner) == True
+    assert oracle._is_winning_move(almost, 1, loser) == False
+    assert oracle._is_winning_move(almost, 2, winner) == True
+
+
+  
+def test_is_losing_move():
+
+    player1 = Player("Robocop", "x")
+    player2 = Player("Vader", "o")
+
+    player1.opponent = player2
+
+    lost = Board.from_list([["o", "o", None, None],
+                            ["x","o",None, None],
+                            ["o",None,None ,None ],
+                            ["x",None,None, None]])
+        
+    lost2 = Board.from_list([["x", None, None, None],
+                            ["x","x",None, None],
+                            ["o","o",None ,None ],
+                            ["x",None,None, None]])
     
-    assert rappel.get_recommendation(board, player_test) == expected
+    oracle = SmartOracle()
     
+    assert oracle._is_losing_move(lost, 0, player1) == False
+    assert oracle._is_losing_move(lost, 1, player1) 
+    assert oracle._is_losing_move(lost, 2, player1) == False
+    assert oracle._is_losing_move(lost, 3, player1) 
+
+    assert oracle._is_losing_move(lost2, 0, player1) 
+    assert oracle._is_losing_move(lost2, 1, player1) 
+    assert oracle._is_losing_move(lost2, 2, player1) == False
+    assert oracle._is_losing_move(lost2, 3, player1) 
+
+
+
     
+#     oracle = SmartOracle()
+
+# def test_is_losing_move():
+
+#     player1 = Player("Robocop", "x")
+#     player2 = Player("Vader", "o")
+
+#     lost = Board.from_list([["o", None, None, None],
+#                             ["x","o",None, None],
+#                             ["o",None,None ,None ],
+#                             ["x",None,None, None]])
+    
+#     oracle = SmartOracle()
+
+#     assert oracle._is_losing_move(lost, 0, player1, player2)
+#     assert oracle._is_losing_move(lost, 2, player1, player2)
+#     assert oracle._is_losing_move(lost, 1, player1, player2) == False
+#     assert oracle._is_losing_move(lost, 3, player1, player2) == False
+
+
+

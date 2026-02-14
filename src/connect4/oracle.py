@@ -100,16 +100,16 @@ class SmartOracle(BaseOracle):
        #if the classification of that recommendation is maybe:
        if recommendation.classification == ColumnClassification.MAYBE:
           
-          #Variable that points to a temporal board with a "new move"
-          temp_board_with_play = self._play_on_temp_board(board,index,player.char)
-          
-          #if on that temp board with the added move is_victory == True
-          if temp_board_with_play.is_victory(player.char):
-           
-           #recommendation gets changed from MAYBE to WIN
+          #Chheck if is_winning_move is True and reclassify 
+          if self._is_winning_move(board,index, player):
+            #recommendation gets changed from MAYBE to WIN
            recommendation = ColumnRecommendation(index, ColumnClassification.WIN)
-       
+         #if there is no win check for a losing_move:
+          elif self._is_losing_move:
+             recommendation = ColumnRecommendation(index, ColumnClassification.LOSE)
        return recommendation
+       
+       
     def _play_on_temp_board(self, original:Board,index:int, player_char):
        
        """
@@ -119,7 +119,51 @@ class SmartOracle(BaseOracle):
        temp_board = copy.deepcopy(original)
        temp_board_play = temp_board.add(player_char,index)
        return temp_board_play
+    
+    def _is_winning_move(self, original:Board, index:int, player):
        
+       """
+       Method that checks if making a move in a given column leads to a win
+       """
+
+       #Variable that points to a temporal board with a "new move"
+       temp_board_with_play = self._play_on_temp_board(original,index,player.char)
+       
+       #Use board method is_victory on temp_board_with_play and return its evaluation
+       return temp_board_with_play.is_victory(player.char) 
+    
+    def _is_losing_move(self,original:Board, index:int, player):  
+       
+       """
+       Checks if there is a potential lose move in the index(Column) it receives
+       """
+       result = False
+       #A list of int(indexes) that will lead to a win
+       opponent_winning_moves = []
+      #Itterate over the length of board
+       for i in range(BOARD_COLUMNS):
+          #if there is a winning move for the opponent, 
+          if self._is_winning_move(original, i,player.opponent):
+             #append it to the list of opponent_winning_moves
+             opponent_winning_moves.append(i)
+        #check if there are winning moves for the opponent:
+       if len(opponent_winning_moves) != 0:     
+         #if the index is NOT in the opponent_winning_moves, it means that if we DON´T play there, the opponent will have a win,
+         #so is_losing_move will be True
+         if index not in opponent_winning_moves:
+          result = True
+       return result
+    
+   #  def _is_losing_move(self,original:Board, index:int, player1, player2):
+       
+   #     result = False
+
+   #     board_move_pl1 = self._play_on_temp_board(original, index, player1)
+
+   #     if self._is_winning_move(board_move_pl1, index, player2):
+   #        result = True
+   #     return result
+          
 
 
 
