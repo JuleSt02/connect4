@@ -2,6 +2,7 @@
 #CHECK GAME, different from course
 
 from .board import Board
+from .oracle import BaseOracle, SmartOracle
 from enum import Enum,auto
 from .match import Match
 from .player import Player, HumanPlayer
@@ -17,14 +18,18 @@ class DifficultyLevel(Enum):
    LOW = auto()
    MEDIUM = auto()
    HIGH = auto()
+
+
 class Game:
     
     def __init__(self, round_type = RoundType.COMPUTER_VS_COMPUTER,
-                 match = Match(Player("Chip"), Player("Chop"))):
+                 match = Match(Player("Chip"), Player("Chop")), difficulty_level=DifficultyLevel.LOW):
        
        #Save the received values 
        self.round_type = round_type
        self.match = match
+       self.difficulty_level = difficulty_level
+
        # We won´t receive a board from the outside (that is why its not present
        # in init) we will create a fresh one for every game
        self.board = Board()
@@ -59,6 +64,7 @@ class Game:
     
     def display_move(self, player):
        print(f"{player._name} {player._char} has moved in column {player.last_move}")
+
 
     def display_board(self):
        
@@ -118,6 +124,38 @@ class Game:
        
        #Creates match
        self.match = self._make_match()
+
+       #Choose difficulty
+       if self.round_type == RoundType.COMPUTER_VS_HUMAN:
+          self.difficulty_level = self._get_difficulty_level()
+
+    def _get_difficulty_level(self):
+       
+       """
+       Ask user to choose the level of difficulty.
+       """
+   
+       print("""Choose your opponent, human.
+             
+            1) Bender: You might as well kiss a Wookiee
+            2) T-800: Great, kid. Don´t get cocky
+            3) T-1000: May the Force be with you
+            """)
+       level = DifficultyLevel.LOW
+       response = ""
+       while  response != "1" and response != "2" and response != "3":
+          
+          response = input("Please press 1, 2 or 3: ")
+          if response == "1":
+             level = DifficultyLevel.LOW
+          elif response == "2":
+             level = DifficultyLevel.MEDIUM
+          else:
+             level = DifficultyLevel.HIGH
+       return level 
+             
+       
+
     
     def _get_round_type(self):
        """
@@ -143,13 +181,16 @@ class Game:
      """
      Player1 will always be a computer
      """
+     difficulty_levels = {DifficultyLevel.LOW: BaseOracle(), DifficultyLevel.MEDIUM: SmartOracle(), DifficultyLevel.HIGH: SmartOracle()}
+     
      if self.round_type == RoundType.COMPUTER_VS_COMPUTER:
          #both players are computers
-         player1 = Player("Ex-Machina")
-         player2 = Player("Wall-E")
+         player1 = Player("Ex-Machina", oracle=SmartOracle())
+         player2 = Player("Wall-E", oracle=SmartOracle())
      else:
          #pc vs human
-         player1 = Player("Robocop")
+         player1 = Player("Robocop", oracle=difficulty_levels[self.difficulty_level])
+         player1._oracle
          #We accept direct input for now
          player2 = HumanPlayer(name=input("Enter your name human: "))
       #We return and create the Match

@@ -8,7 +8,7 @@ from .logic import is_valid
 import random
 
 # if TYPE_CHECKING:
-from .oracle import BaseOracle
+from .oracle import BaseOracle, SmartOracle
 
 class Player:
 
@@ -94,32 +94,39 @@ class HumanPlayer(Player):
     """
     Doesnt need an Oracle. Receives input from a human player
     """
-    def __init__(self, name:str, char=None)->None:
+    def __init__(self, name:str, char=None, oracle = BaseOracle())->None:
 
         self._char = char
         self._name = name
+        self._oracle = oracle
 
     def _ask_oracle(self, board):
         """
         We override the method of our superclass and ask the human which is the oracle in this case
         """
-       
         while True:
             #Get input
-            raw = input("Choose a column: ")
+            raw = input("Choose a column or h for -help : ")
             #Validate
-            if is_valid(raw,board):
-                pos = int(raw)
-                #self._play_on(board, pos)
-                break
+            if raw == "h":
+             self._oracle.display_recommendations(board,self)
             else:
-                print("Invalid input you fool, try again. ")
+                if is_valid(raw,board):
+                 pos = int(raw)
+                 #self._play_on(board, pos)
+                 break
+                else:
+                  print("Invalid input you fool, try again. ")
         return pos
+    
+    # def get_recommendations_oracle(self,board):
+    #     recommendations = self._oracle.get_recommendation(board,self)
+    #     return recommendations
         
     #We need to override play because the human won´t use the oracle
     def play(self,board):
         """
-        Maybe also check how the board looks at the moment? Or maybe we do that in main?
+        Plays on board
         """  
         pos = self._ask_oracle(board)     
         self._play_on(board, pos)

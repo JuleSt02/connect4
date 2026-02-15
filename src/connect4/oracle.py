@@ -5,7 +5,7 @@ from enum import Enum, auto
 from .board import Board
 from .settings import BOARD_COLUMNS 
 import copy
-
+from beautifultable import BeautifulTable
 
 class ColumnClassification(Enum):
 
@@ -38,6 +38,14 @@ class ColumnRecommendation:
        #If same class, we check the attribute classification , index attribute  is not relevant for this 
        else:
           return (self.classification) == (other.classification)
+       
+    def  __str__(self):
+       
+       return str(self)
+    
+
+       
+
        
 
 #Oraculos, de mas tonto a mas listo
@@ -74,8 +82,20 @@ class BaseOracle:
         if board.is_full(index):
             result = ColumnRecommendation(index, ColumnClassification.FULL)
         return result
+    
+    def display_recommendations(self,board, player):      
+      
+      recommendations = self.get_recommendation(board, player)
+      bt = BeautifulTable()
+      bt.columns.header = [str(i) for i in range(BOARD_COLUMNS)]
+    #Extract classifications into a list
+      row = [recom.classification.name for recom in recommendations]
+    #Append as row
+      bt.rows.append(row)
+      print(bt)
 
- 
+
+
         
     
 class SmartOracle(BaseOracle):
@@ -106,9 +126,10 @@ class SmartOracle(BaseOracle):
            recommendation = ColumnRecommendation(index, ColumnClassification.WIN)
          #if there is no win check for a losing_move:
           elif self._is_losing_move:
-             recommendation = ColumnRecommendation(index, ColumnClassification.LOSE)
+            recommendation = ColumnRecommendation(index, ColumnClassification.LOSE)
        return recommendation
-       
+    
+
        
     def _play_on_temp_board(self, original:Board,index:int, player_char):
        
@@ -135,7 +156,7 @@ class SmartOracle(BaseOracle):
     def _is_losing_move(self,original:Board, index:int, player):  
        
        """
-       Checks if there is a potential lose move in the index(Column) it receives
+       Checks if there is a potential losing move in the index(Column) it receives
        """
        result = False
        #A list of int(indexes) that will lead to a win
@@ -148,7 +169,8 @@ class SmartOracle(BaseOracle):
              opponent_winning_moves.append(i)
         #check if there are winning moves for the opponent:
        if len(opponent_winning_moves) != 0:     
-         #if the index is NOT in the opponent_winning_moves, it means that if we DON´T play there, the opponent will have a win,
+         #if the index is NOT in the opponent_winning_moves, it means that if we DON´T play there, 
+         # the opponent will have a win,
          #so is_losing_move will be True
          if index not in opponent_winning_moves:
           result = True
