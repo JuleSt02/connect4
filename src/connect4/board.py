@@ -66,14 +66,7 @@ class Board:
         return hash(self._columns)
 
     
-    # def __repr__(self)->str:
-    #     """
-    #     Repr lets us print the state of our object
-       
-    #     """
-    #    # inverted = inverted_board(self._columns)
-    #     return f"Board({(self._columns)}"
-    
+
     def __len__(self):
         """
         Magical method we can use to get the length of every object, also classes
@@ -81,17 +74,7 @@ class Board:
         return len(self._columns)
 
     
-    # def __str__(self)->str:
 
-    #     inverted = inverted_board(self._columns)
-    #     reverted = reverted_matrix(inverted)
-    #     #Convert into str to apply /n
-    #     text = ""
-    #     for row in reversed(inverted):
-    #       text += str(row) + "\n"
-    #     #Cleans last /n
-    #     return text.rstrip("\n")
-    
     def create_board(self):    
         return [[None] * BOARD_ROWS for _ in range(BOARD_COLUMNS)]
     
@@ -150,18 +133,6 @@ class Board:
         representado por un caracter 
         """
         
-        #METERLE AQUI el if has vertical vitory : (print) y asi con todas para que
-        #Siempre e vea el resultado
-        #Comprueba si se cumple alguna de las posibles victorias verticales/horizontales o diagonales.
-
-        # if self._has_vertical_victory(player_char, self._columns):
-        #     print("VERTICAL VICTORY")
-        # elif self._has_horizontal_victory(player_char, self._columns):
-        #     print("HORIZONTAL VICTORY")
-        # elif self._has_ascending_victory(player_char, self._columns):
-        #     print("ASCENDING VICTORY")
-        # elif self._has_descending_victory(player_char, self._columns):
-        #     print("DESCENDING VICTORY")
 
         return (self._has_vertical_victory(player_char, self._columns) or
                  self._has_horizontal_victory(player_char, self._columns) or

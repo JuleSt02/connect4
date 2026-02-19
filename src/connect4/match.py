@@ -16,8 +16,9 @@ class Match():
         player1._char = "x"
         player2._char = "o"
 
-        #This method will tell us both depending on which player is asking
+        # Setting  the opponments for both players 
         player1._opponent = player2
+        player2._opponent = player1
         
         #We create the data structure to store our players
         self._players = {"x" : player1, "o": player2}

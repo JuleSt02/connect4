@@ -190,7 +190,6 @@ class Game:
      else:
          #pc vs human
          player1 = Player("Robocop", oracle=difficulty_levels[self.difficulty_level])
-         player1._oracle
          #We accept direct input for now
          player2 = HumanPlayer(name=input("Enter your name human: "))
       #We return and create the Match

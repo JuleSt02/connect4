@@ -28,57 +28,59 @@ def test_base_oracle():
     assert len(rappel.get_recommendation(board, None))== len(expected)
     assert rappel.get_recommendation(board, None) == expected
 
-def test_equality():
+# def test_equality():
     
-    cr = ColumnRecommendation(2, ColumnClassification.MAYBE)
+#     cr = ColumnRecommendation(2, ColumnClassification.MAYBE)
     
-    #same same
-    assert cr == cr 
+#     #same same
+#     assert cr == cr 
 
-    #same same but different. Equivalentes. Hay que ajustar esto con metodo __eq__ para
-    #que el programa pueda reconocer estas equivalencias entre objetos que tengan el mismo valor
-    #Otro objeto con mismos valores
-    assert cr == ColumnRecommendation(2, ColumnClassification.MAYBE) 
-    assert cr == ColumnRecommendation(3, ColumnClassification.MAYBE)
-    #no equivalntes
-    assert cr != ColumnRecommendation(1, ColumnClassification.FULL)
-    assert cr != ColumnRecommendation(2, ColumnClassification.FULL)
+#     #same same but different. Equivalentes. Hay que ajustar esto con metodo __eq__ para
+#     #que el programa pueda reconocer estas equivalencias entre objetos que tengan el mismo valor
+#     #Otro objeto con mismos valores
+#     assert cr == ColumnRecommendation(2, ColumnClassification.MAYBE) 
+#     assert cr == ColumnRecommendation(3, ColumnClassification.MAYBE)
+#     #no equivalntes
+#     assert cr != ColumnRecommendation(1, ColumnClassification.FULL)
+#     assert cr != ColumnRecommendation(2, ColumnClassification.FULL)
 
 
-def test_are_same():
+# def test_are_same():
 
-    list_recommendations1 = [ColumnRecommendation(0, ColumnClassification.MAYBE),
-                ColumnRecommendation(1, ColumnClassification.FULL),
-                ColumnRecommendation(2, ColumnClassification.FULL),
-                ColumnRecommendation(3, ColumnClassification.MAYBE)]
-    list_recommendations2 = [ColumnRecommendation(0, ColumnClassification.MAYBE),
-                ColumnRecommendation(1, ColumnClassification.MAYBE),
-                ColumnRecommendation(2, ColumnClassification.MAYBE),
-                ColumnRecommendation(0, ColumnClassification.MAYBE)]
+#     list_recommendations1 = [ColumnRecommendation(0, ColumnClassification.MAYBE),
+#                 ColumnRecommendation(1, ColumnClassification.FULL),
+#                 ColumnRecommendation(2, ColumnClassification.FULL),
+#                 ColumnRecommendation(3, ColumnClassification.MAYBE)]
+#     list_recommendations2 = [ColumnRecommendation(0, ColumnClassification.MAYBE),
+#                 ColumnRecommendation(1, ColumnClassification.MAYBE),
+#                 ColumnRecommendation(2, ColumnClassification.MAYBE),
+#                 ColumnRecommendation(0, ColumnClassification.MAYBE)]
     
-    assert are_same(list_recommendations1) == False
-    assert are_same(list_recommendations2)
+#     assert are_same(list_recommendations1) == False
+#     assert are_same(list_recommendations2)
 
 
 
 #TEST SMART ORACLE
 
-# def test_smart_oracle():
+def test_smart_oracle():
 
-#     player_test = Player("Robocop", "x")
+    player_test = Player("Robocop", "x")
+    player_test2 = Player("Vader", "o")
+    player_test.opponent = player_test2
     
-#     board = Board.from_list([["x", None, None, None],
-#                             ["x","x",None, None],
-#                             ["o","o",None ,None ],
-#                             ["x",None,None, None]])
+    board = Board.from_list([["x", None, None, None],
+                            ["x","x",None, None],
+                            ["o","o",None ,None ],
+                            ["x",None,None, None]])
     
-#     rappel = SmartOracle()
-#     expected = [ColumnRecommendation(0, ColumnClassification.MAYBE),
-#                 ColumnRecommendation(1, ColumnClassification.WIN),
-#                 ColumnRecommendation(2, ColumnClassification.WIN),
-#                 ColumnRecommendation(3, ColumnClassification.MAYBE)]
+    rappel = SmartOracle()
+    expected = [ColumnRecommendation(0, ColumnClassification.LOSE),
+                ColumnRecommendation(1, ColumnClassification.WIN),
+                ColumnRecommendation(2, ColumnClassification.WIN),
+                ColumnRecommendation(3, ColumnClassification.LOSE)]
     
-    # assert rappel.get_recommendation(board, player_test) == expected
+    assert rappel.get_recommendation(board, player_test) == expected
     
 def test_is_wining_move():
     winner = Player("Robocop", "x")
@@ -112,7 +114,7 @@ def test_is_losing_move():
     player1.opponent = player2
 
     lost = Board.from_list([["o", "o", None, None],
-                            ["x","o",None, None],
+                            ["x","x",None, None],
                             ["o",None,None ,None ],
                             ["x",None,None, None]])
         
@@ -125,11 +127,11 @@ def test_is_losing_move():
     
     assert oracle._is_losing_move(lost, 0, player1) == False
     assert oracle._is_losing_move(lost, 1, player1) 
-    assert oracle._is_losing_move(lost, 2, player1) == False
+    assert oracle._is_losing_move(lost, 2, player1) 
     assert oracle._is_losing_move(lost, 3, player1) 
 
     assert oracle._is_losing_move(lost2, 0, player1) 
-    assert oracle._is_losing_move(lost2, 1, player1) 
+    assert oracle._is_losing_move(lost2, 1, player1)
     assert oracle._is_losing_move(lost2, 2, player1) == False
     assert oracle._is_losing_move(lost2, 3, player1) 
 

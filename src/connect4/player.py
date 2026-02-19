@@ -94,11 +94,13 @@ class HumanPlayer(Player):
     """
     Doesnt need an Oracle. Receives input from a human player
     """
-    def __init__(self, name:str, char=None, oracle = BaseOracle())->None:
+    def __init__(self, name:str, char=None, opponent = None, oracle = SmartOracle())->None:
 
         self._char = char
         self._name = name
+        self._opponent = opponent
         self._oracle = oracle
+       
 
     def _ask_oracle(self, board):
         """
